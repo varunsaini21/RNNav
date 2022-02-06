@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "934739751167",
+    "project_id": "rnnav-373af",
+    "storage_bucket": "rnnav-373af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934739751167:android:78b4585205e22bf9ac5cca",
+        "android_client_info": {
+          "package_name": "com.rnnav"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934739751167-q63ur0eqja6bq7k93tj13j1e1ktsk1f4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpor0I0OnSSEWBQoTEo0W3K3LanV6Sons"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934739751167-q63ur0eqja6bq7k93tj13j1e1ktsk1f4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
