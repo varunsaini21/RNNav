@@ -1264,6 +1264,11 @@
   "resolved" "https://registry.npmjs.org/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz"
   "version" "1.1.0"
 
+"@react-native-community/netinfo@^7.1.9":
+  "integrity" "sha512-xxbxFherpOjQeJm3rIx6gmZNEEBqVDIcmBII5QVSN8zf3xAwmaT/RxT74ISYDkeSlZwv4eegpkD4QA1ky52CNg=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/netinfo/-/netinfo-7.1.9.tgz"
+  "version" "7.1.9"
+
 "@react-native-firebase/analytics@^14.3.0":
   "integrity" "sha512-HMTmLDs0JIqvepJlxKWx2DwUZYm+18Fk6xemrLGnEUdaWbrIkLj7Rpoj8HuEsDId/vPCAZAREftgPH3XqVfmng=="
   "resolved" "https://registry.npmjs.org/@react-native-firebase/analytics/-/analytics-14.3.0.tgz"
@@ -1908,6 +1913,13 @@
   "integrity" "sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg=="
   "resolved" "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz"
   "version" "2.1.2"
+
+"axios@^0.25.0":
+  "integrity" "sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-0.25.0.tgz"
+  "version" "0.25.0"
+  dependencies:
+    "follow-redirects" "^1.14.7"
 
 "babel-core@^7.0.0-bridge.0":
   "integrity" "sha512-poPX9mZH/5CSanm50Q+1toVci6pv5KSRv/5TWCwtzQS5XEwn40BcCrgIeMFWP9CKKIniKXNxoIOnOq4VVlGXhg=="
@@ -3324,6 +3336,11 @@
   "integrity" "sha512-X1DFb6wxXpZLLqM9NX0Wm+4xoN6xAyJn8OwuiHsV0JJvLfD18Z+wbgJ1lM7ykTVINdu8v7Mu0gIzWMvnhKWBkA=="
   "resolved" "https://registry.npmjs.org/flow-parser/-/flow-parser-0.169.0.tgz"
   "version" "0.169.0"
+
+"follow-redirects@^1.14.7":
+  "integrity" "sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ=="
+  "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.7.tgz"
+  "version" "1.14.7"
 
 "for-in@^0.1.3":
   "integrity" "sha1-2Hc5COMSVhCZUrH9ubP6hn0ndeE="
@@ -5868,7 +5885,7 @@
     "kleur" "^3.0.3"
     "sisteransi" "^1.0.5"
 
-"prop-types@*", "prop-types@^15.7.2", "prop-types@^15.7.x":
+"prop-types@*", "prop-types@^15.6.2", "prop-types@^15.7.2", "prop-types@^15.7.x":
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   "version" "15.8.1"
@@ -5948,6 +5965,13 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   "version" "16.13.1"
 
+"react-native-animatable@1.3.3":
+  "integrity" "sha512-2ckIxZQAsvWn25Ho+DK3d1mXIgj7tITkrS4pYDvx96WyOttSvzzFeQnM2od0+FUMzILbdHDsDEqZvnz1DYNQ1w=="
+  "resolved" "https://registry.npmjs.org/react-native-animatable/-/react-native-animatable-1.3.3.tgz"
+  "version" "1.3.3"
+  dependencies:
+    "prop-types" "^15.7.2"
+
 "react-native-codegen@^0.0.8":
   "integrity" "sha512-k/944+0XD+8l7zDaiKfYabyEKmAmyZgS1mj+4LcSRPyHnrjgCHKrh/Y6jM6kucQ6xU1+1uyMmF/dSkikxK8i+Q=="
   "resolved" "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.0.8.tgz"
@@ -6009,6 +6033,14 @@
   "version" "0.8.1"
   dependencies:
     "prop-types" "^15.7.2"
+
+"react-native-modal@^13.0.0":
+  "integrity" "sha512-k6r9T31mc7HIDFj1V53ceAAN1dwc8052c4JLtDVEmEQ19Bbq9yiLXoDsQuNb+hB8A+2tVOXmo5Gq4IQfb11upw=="
+  "resolved" "https://registry.npmjs.org/react-native-modal/-/react-native-modal-13.0.0.tgz"
+  "version" "13.0.0"
+  dependencies:
+    "prop-types" "^15.6.2"
+    "react-native-animatable" "1.3.3"
 
 "react-native-pager-view@*", "react-native-pager-view@^5.4.9", "react-native-pager-view@>= 4.0.0":
   "integrity" "sha512-D6tzxpwMGdl6CXgtskGWhKRc5cJakCazESRGt7PkqnpyiH3N35ft1KmR82pCSQetAFlytFiToeu3a/dG5CELvA=="
@@ -6081,7 +6113,7 @@
     "prop-types" "^15.7.2"
     "yargs" "^16.1.1"
 
-"react-native@*", "react-native@>=0.42.0", "react-native@0.67.1":
+"react-native@*", "react-native@>=0.42.0", "react-native@>=0.59", "react-native@>=0.65.0", "react-native@0.67.1":
   "integrity" "sha512-doKN9qhtjilF+6p8603OVzqGKL4fq8EDAH5u00KPmZbL5ampHDQX9y8/uwlUvJggvHwZXlnvhW63u8Y1LA8rxw=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.67.1.tgz"
   "version" "0.67.1"

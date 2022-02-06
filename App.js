@@ -11,11 +11,13 @@ import LogInScreen from './src/screens/LogInScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import UserChatScreen from './src/screens/UserChatScreen';
 import AccountScreen from './src/screens/AccountScreen';
-import PostScreen from "./src/screens/PostScreen";
-import UploadPostScreen from "./src/screens/UploadPostScreen";
+import PostScreen from './src/screens/PostScreen';
+import UploadPostScreen from './src/screens/UploadPostScreen';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import NetInfo from '@react-native-community/netinfo';
+import NoInternetModal from './src/components/NoInternetModal';
 
 const theme = {
   ...DefaultTheme,
@@ -33,6 +35,9 @@ const BottomTab = createMaterialBottomTabNavigator();
 
 const Navigation = () => {
   const [user, setuser] = useState('');
+  const [isOffline, setOfflineStatus] = useState(false);
+  console.log('Internet Status>>>', isOffline);
+
   useEffect(() => {
     const unregister = auth().onAuthStateChanged(userExist => {
       if (userExist) {
@@ -42,9 +47,14 @@ const Navigation = () => {
         setuser(userExist);
       } else setuser('');
     });
+    const removeNetInfoSubscription = NetInfo.addEventListener(state => {
+      const offline = !(state.isConnected && state.isInternetReachable);
+      setOfflineStatus(offline);
+    });
 
     return () => {
       unregister();
+      removeNetInfoSubscription();
     };
   }, []);
 
@@ -57,21 +67,17 @@ const Navigation = () => {
         {user ? (
           <>
             <Stack.Screen name="MyTabs" options={{headerShown: false}}>
-              {props => <MyTabs {...props} user={user} />}
+              {props => <MyTabs {...props} user={user} isOffline={isOffline} />}
             </Stack.Screen>
           </>
         ) : (
           <>
-            <Stack.Screen
-              name="LogInScreen"
-              component={LogInScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="SignUpScreen"
-              component={SignUpScreen}
-              options={{headerShown: false}}
-            />
+            <Stack.Screen name="LogInScreen" options={{headerShown: false}}>
+              {props => <LogInScreen {...props} isOffline={isOffline} />}
+            </Stack.Screen>
+            <Stack.Screen name="SignUpScreen" options={{headerShown: false}}>
+              {props => <SignUpScreen {...props} isOffline={isOffline} />}
+            </Stack.Screen>
           </>
         )}
       </Stack.Navigator>
@@ -79,45 +85,47 @@ const Navigation = () => {
   );
 };
 
-function HomeTab({user}) {
+function HomeTab({user, isOffline}) {
   return (
     <TopTab.Navigator
       initialRouteName="Feed Screen"
       screenOptions={{headerShown: false}}>
       <TopTab.Screen name="Feed Screen" options={{headerShown: false}}>
-        {props => <FeedScreen {...props} user={user} />}
+        {props => <FeedScreen {...props} user={user} isOffline={isOffline} />}
       </TopTab.Screen>
       <TopTab.Screen name="Home Screen" options={{headerShown: false}}>
-        {props => <HomeScreen {...props} user={user} />}
+        {props => <HomeScreen {...props} user={user} isOffline={isOffline} />}
       </TopTab.Screen>
     </TopTab.Navigator>
   );
 }
 
-function FeedScreen({user}) {
+function FeedScreen({user, isOffline}) {
   return (
-  //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-  //   <Text>Search!</Text>
-  // </View>
+    //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    //   <Text>Search!</Text>
+    // </View>
     <Stack.Navigator>
       <>
         <Stack.Screen name="PostScreen" options={{headerShown: false}}>
-          {props => <PostScreen {...props} user={user} />}
+          {props => <PostScreen {...props} user={user} isOffline={isOffline} />}
         </Stack.Screen>
         <Stack.Screen name="UploadPostScreen" options={{headerShown: false}}>
-          {props => <UploadPostScreen {...props} user={user} />}
+          {props => (
+            <UploadPostScreen {...props} user={user} isOffline={isOffline} />
+          )}
         </Stack.Screen>
       </>
     </Stack.Navigator>
   );
 }
 
-function HomeScreen({user}) {
+function HomeScreen({user, isOffline}) {
   return (
     <Stack.Navigator>
       <>
         <Stack.Screen name="ChatScreen" options={{headerShown: false}}>
-          {props => <ChatScreen {...props} user={user} />}
+          {props => <ChatScreen {...props} user={user} isOffline={isOffline} />}
         </Stack.Screen>
         <Stack.Screen
           name="UserChatScreen"
@@ -129,7 +137,9 @@ function HomeScreen({user}) {
               </View>
             ),
           })}>
-          {props => <UserChatScreen {...props} user={user} />}
+          {props => (
+            <UserChatScreen {...props} user={user} isOffline={isOffline} />
+          )}
         </Stack.Screen>
       </>
     </Stack.Navigator>
@@ -144,17 +154,21 @@ function SearchTab() {
   );
 }
 
-function UpdatesTab() {
+function UpdatesTab({isOffline}) {
+  <NoInternetModal show={isOffline} />;
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Update!</Text>
-      <Button
-        title={'Javascript Crash Now.'}
-        onPress={() => {
-          undefinedVariable.notAFunction();
-        }}
-      />
-    </View>
+    <>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text>Update!</Text>
+        <Button
+          title={'Javascript Crash Now.'}
+          onPress={() => {
+            undefinedVariable.notAFunction();
+          }}
+        />
+      </View>
+      {isOffline? <NoInternetModal show={isOffline} />:null}
+    </>
   );
 }
 
@@ -248,7 +262,7 @@ function UpdatesTab() {
 //   );
 // }
 
-function MyTabs({user}) {
+function MyTabs({user, isOffline}) {
   return (
     <BottomTab.Navigator
       initialRouteName="HomeTab"
@@ -263,38 +277,40 @@ function MyTabs({user}) {
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
         }}>
-        {props => <HomeTab {...props} user={user} />}
+        {props => <HomeTab {...props} user={user} isOffline={isOffline} />}
       </BottomTab.Screen>
       <BottomTab.Screen
         name="SearchTab"
-        component={SearchTab}
         options={{
           tabBarLabel: 'Search',
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="magnify" color={color} size={26} />
           ),
-        }}
-      />
+        }}>
+        {props => <SearchTab {...props} isOffline={isOffline} />}
+      </BottomTab.Screen>
       <BottomTab.Screen
         name="UpdatesTab"
-        component={UpdatesTab}
         options={{
           tabBarLabel: 'Updates',
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="bell" color={color} size={26} />
           ),
-        }}
-      />
+        }}>
+        {props => <UpdatesTab {...props} isOffline={isOffline} />}
+      </BottomTab.Screen>
       <BottomTab.Screen
         name="AccountScreen"
         options={{
           tabBarLabel: 'Account',
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="account" color={color} size={26} />
-            ),
-          }}>
-          {props => <AccountScreen {...props} user={user} />}
-        </BottomTab.Screen>
+          ),
+        }}>
+        {props => (
+          <AccountScreen {...props} user={user} isOffline={isOffline} />
+        )}
+      </BottomTab.Screen>
     </BottomTab.Navigator>
   );
 }
