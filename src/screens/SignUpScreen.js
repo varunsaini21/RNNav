@@ -16,7 +16,7 @@ import messaging from '@react-native-firebase/messaging';
 import crashlytics from '@react-native-firebase/crashlytics';
 import NoInternetModal from '../components/NoInternetModal';
 
-export default function SignUpScreen({navigation,isOffline}) {
+export default function SignUpScreen({navigation, isOffline}) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');

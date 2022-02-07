@@ -6,7 +6,7 @@ import {Button} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import NoInternetModal from '../components/NoInternetModal';
 
-export default function AccountScreen({user,isOffline}) {
+export default function AccountScreen({user, isOffline}) {
   const [profile, setProfile] = useState('');
 
   useEffect(() => {

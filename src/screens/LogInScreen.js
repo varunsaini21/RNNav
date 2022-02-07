@@ -13,7 +13,7 @@ import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 import NoInternetModal from '../components/NoInternetModal';
 
-export default function LogInScreen({navigation,isOffline}) {
+export default function LogInScreen({navigation, isOffline}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const userLogin = async () => {

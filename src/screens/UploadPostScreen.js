@@ -12,7 +12,7 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import NoInternetModal from '../components/NoInternetModal';
 
-export default function SignUpScreen({navigation, user}) {
+export default function SignUpScreen({navigation, user, isOffline}) {
   const [title, setTitle] = useState('');
   const [image, setImage] = useState(null);
   const uploadpost = async () => {
