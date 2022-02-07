@@ -14,8 +14,9 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 import crashlytics from '@react-native-firebase/crashlytics';
+import NoInternetModal from '../components/NoInternetModal';
 
-export default function SignUpScreen({navigation}) {
+export default function SignUpScreen({navigation,isOffline}) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -62,74 +63,80 @@ export default function SignUpScreen({navigation}) {
   };
 
   const pickImageAndUpload = () => {
-    launchImageLibrary({quality: 0.5, maxHeight: 200 , maxWidth: 200}, fileobj => {
-      const uploadTask = storage()
-        .ref()
-        .child(`/userprofile/${Date.now()}`)
-        .putFile(fileobj.assets[0].uri);
-      uploadTask.on(
-        'state_changed',
-        snapshot => {
-          var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          if (progress == 100) alert('image uploaded');
-        },
-        error => {
-          alert('error uploading image');
-        },
-        () => {
-          uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-            console.log("ProfilePicDownloadURL",downloadURL)
-            setImage(downloadURL);
-          });
-        },
-      );
-    });
+    launchImageLibrary(
+      {quality: 0.5, maxHeight: 200, maxWidth: 200},
+      fileobj => {
+        const uploadTask = storage()
+          .ref()
+          .child(`/userprofile/${Date.now()}`)
+          .putFile(fileobj.assets[0].uri);
+        uploadTask.on(
+          'state_changed',
+          snapshot => {
+            var progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            if (progress == 100) alert('image uploaded');
+          },
+          error => {
+            alert('error uploading image');
+          },
+          () => {
+            uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
+              console.log('ProfilePicDownloadURL', downloadURL);
+              setImage(downloadURL);
+            });
+          },
+        );
+      },
+    );
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding">
-      <View style={styles.box1}>
-        <Text style={styles.text}>Welcome to Chat App</Text>
-        <Image style={styles.img} source={require('../assests/chat.png')} />
-      </View>
-      <View style={styles.box2}>
-        <TextInput
-          label="Name"
-          value={name}
-          onChangeText={text => setName(text)}
-          mode="outlined"
-        />
-        <TextInput
-          label="Email"
-          value={email}
-          onChangeText={text => setEmail(text)}
-          mode="outlined"
-        />
-        <TextInput
-          label="Password"
-          value={password}
-          onChangeText={text => setPassword(text)}
-          mode="outlined"
-          secureTextEntry
-        />
-        <Button mode="contained" onPress={() => pickImageAndUpload()}>
-          Select Profile Pic
-        </Button>
-        <Button
-          mode="contained"
-          disabled={image ? false : true}
-          onPress={() => userSignup()}>
-          Signup
-        </Button>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={{textAlign: 'center'}}>Already have an account?</Text>
-        </TouchableOpacity>
-        {/* <Button mode="contained" onPress={() => crashlytics().crash()}>
+    <>
+      <KeyboardAvoidingView behavior="padding">
+        <View style={styles.box1}>
+          <Text style={styles.text}>Welcome to Chat App</Text>
+          <Image style={styles.img} source={require('../assests/chat.png')} />
+        </View>
+        <View style={styles.box2}>
+          <TextInput
+            label="Name"
+            value={name}
+            onChangeText={text => setName(text)}
+            mode="outlined"
+          />
+          <TextInput
+            label="Email"
+            value={email}
+            onChangeText={text => setEmail(text)}
+            mode="outlined"
+          />
+          <TextInput
+            label="Password"
+            value={password}
+            onChangeText={text => setPassword(text)}
+            mode="outlined"
+            secureTextEntry
+          />
+          <Button mode="contained" onPress={() => pickImageAndUpload()}>
+            Select Profile Pic
+          </Button>
+          <Button
+            mode="contained"
+            disabled={image ? false : true}
+            onPress={() => userSignup()}>
+            Signup
+          </Button>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={{textAlign: 'center'}}>Already have an account?</Text>
+          </TouchableOpacity>
+          {/* <Button mode="contained" onPress={() => crashlytics().crash()}>
           Crash Now
         </Button> */}
-      </View>
-    </KeyboardAvoidingView>
+        </View>
+      </KeyboardAvoidingView>
+      {isOffline ? <NoInternetModal show={isOffline} /> : null}
+    </>
   );
 }
 

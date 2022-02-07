@@ -11,8 +11,9 @@ import {
 import firestore from '@react-native-firebase/firestore';
 // import {FAB} from 'react-native-paper';
 import messaging from '@react-native-firebase/messaging';
+import NoInternetModal from '../components/NoInternetModal';
 
-export default function ChatScreen({user, navigation}) {
+export default function ChatScreen({user, navigation, isOffline}) {
   const [users, setUsers] = useState(null);
   const getUsers = async () => {
     const querySanp = await firestore()
@@ -59,6 +60,7 @@ export default function ChatScreen({user, navigation}) {
     );
   };
   return (
+    <>
     <View style={{flex: 1}}>
       <FlatList
         data={users}
@@ -74,6 +76,8 @@ export default function ChatScreen({user, navigation}) {
         onPress={() => navigation.navigate('AccountScreen')}
       /> */}
     </View>
+    {isOffline? <NoInternetModal show={isOffline} />:null}
+    </>
   );
 }
 

@@ -36,7 +36,6 @@ const BottomTab = createMaterialBottomTabNavigator();
 const Navigation = () => {
   const [user, setuser] = useState('');
   const [isOffline, setOfflineStatus] = useState(false);
-  console.log('Internet Status>>>', isOffline);
 
   useEffect(() => {
     const unregister = auth().onAuthStateChanged(userExist => {
@@ -146,16 +145,18 @@ function HomeScreen({user, isOffline}) {
   );
 }
 
-function SearchTab() {
+function SearchTab({isOffline}) {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Search!</Text>
-    </View>
+    <>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text>Search!</Text>
+      </View>
+      {isOffline ? <NoInternetModal show={isOffline} /> : null}
+    </>
   );
 }
 
 function UpdatesTab({isOffline}) {
-  <NoInternetModal show={isOffline} />;
   return (
     <>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -167,7 +168,7 @@ function UpdatesTab({isOffline}) {
           }}
         />
       </View>
-      {isOffline? <NoInternetModal show={isOffline} />:null}
+      {isOffline ? <NoInternetModal show={isOffline} /> : null}
     </>
   );
 }

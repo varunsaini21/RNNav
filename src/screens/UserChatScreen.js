@@ -4,8 +4,9 @@ import {GiftedChat, Bubble, InputToolbar} from 'react-native-gifted-chat';
 import firestore from '@react-native-firebase/firestore';
 // import config from '../config';
 import Config from 'react-native-config';
+import NoInternetModal from '../components/NoInternetModal';
 
-export default function UserChatScreen({user, route}) {
+export default function UserChatScreen({user, route, isOffline}) {
   const [messages, setMessages] = useState([]);
   const {uid} = route.params;
   console.log('Config.SERVER_URL>>>', Config.SERVER_URL);
@@ -111,6 +112,7 @@ export default function UserChatScreen({user, route}) {
     sendNotif(mymsg);
   };
   return (
+    <>
     <View style={{flex: 1, backgroundColor: '#f5f5f5'}}>
       <GiftedChat
         messages={messages}
@@ -146,5 +148,7 @@ export default function UserChatScreen({user, route}) {
         }}
       />
     </View>
+    {isOffline? <NoInternetModal show={isOffline} />:null}
+    </>
   );
 }

@@ -10,6 +10,7 @@ import {TextInput, Button} from 'react-native-paper';
 import {launchImageLibrary} from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
+import NoInternetModal from '../components/NoInternetModal';
 
 export default function SignUpScreen({navigation, user}) {
   const [title, setTitle] = useState('');
@@ -39,7 +40,7 @@ export default function SignUpScreen({navigation, user}) {
           userName: uploadBy.name,
           post: image,
         });
-        navigation.goBack()
+      navigation.goBack();
     } catch (err) {
       alert('Something went wrong');
       console.log('Error>>>', err);
@@ -47,57 +48,63 @@ export default function SignUpScreen({navigation, user}) {
   };
 
   const pickPostAndUpload = () => {
-    launchImageLibrary({quality: 0.5, maxHeight: 400, maxWidth: 400}, fileobj => {
-      const uploadTask = storage()
-        .ref()
-        .child(`/userpost/${Date.now()}`)
-        .putFile(fileobj.assets[0].uri);
-      uploadTask.on(
-        'state_changed',
-        snapshot => {
-          var progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          if (progress == 100) alert('Image Uploaded');
-        },
-        error => {
-          alert('error uploading image');
-        },
-        () => {
-          uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-            console.log('PostDownloadURL', downloadURL);
-            setImage(downloadURL);
-          });
-        },
-      );
-    });
+    launchImageLibrary(
+      {quality: 0.5, maxHeight: 400, maxWidth: 400},
+      fileobj => {
+        const uploadTask = storage()
+          .ref()
+          .child(`/userpost/${Date.now()}`)
+          .putFile(fileobj.assets[0].uri);
+        uploadTask.on(
+          'state_changed',
+          snapshot => {
+            var progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            if (progress == 100) alert('Image Uploaded');
+          },
+          error => {
+            alert('error uploading image');
+          },
+          () => {
+            uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
+              console.log('PostDownloadURL', downloadURL);
+              setImage(downloadURL);
+            });
+          },
+        );
+      },
+    );
   };
 
   return (
-    <KeyboardAvoidingView behavior="height">
-      <View style={styles.box1}>
-        <Text style={styles.text}>Upload Post</Text>
-      </View>
-      <View style={styles.box2}>
-        <TextInput
-          label="Title"
-          value={title}
-          onChangeText={text => setTitle(text)}
-          mode="outlined"
-        />
-        <Button mode="contained" onPress={() => pickPostAndUpload()}>
-          Select image
-        </Button>
-        <Button
-          mode="contained"
-          disabled={image ? false : true}
-          onPress={() => uploadpost()}>
-          Post
-        </Button>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={{textAlign: 'center', fontSize: 15,}}>Cancel</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+    <>
+      <KeyboardAvoidingView behavior="height">
+        <View style={styles.box1}>
+          <Text style={styles.text}>Upload Post</Text>
+        </View>
+        <View style={styles.box2}>
+          <TextInput
+            label="Title"
+            value={title}
+            onChangeText={text => setTitle(text)}
+            mode="outlined"
+          />
+          <Button mode="contained" onPress={() => pickPostAndUpload()}>
+            Select image
+          </Button>
+          <Button
+            mode="contained"
+            disabled={image ? false : true}
+            onPress={() => uploadpost()}>
+            Post
+          </Button>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={{textAlign: 'center', fontSize: 15}}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+      {isOffline ? <NoInternetModal show={isOffline} /> : null}
+    </>
   );
 }
 

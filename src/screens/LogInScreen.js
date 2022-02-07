@@ -11,8 +11,9 @@ import {TextInput, Button} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
+import NoInternetModal from '../components/NoInternetModal';
 
-export default function LogInScreen({navigation}) {
+export default function LogInScreen({navigation,isOffline}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const userLogin = async () => {
@@ -35,33 +36,36 @@ export default function LogInScreen({navigation}) {
     }
   };
   return (
-    <KeyboardAvoidingView behavior="position">
-      <View style={styles.box1}>
-        <Text style={styles.text}>Welcome to Chat App</Text>
-        <Image style={styles.img} source={require('../assests/chat.png')} />
-      </View>
-      <View style={styles.box2}>
-        <TextInput
-          label="Email"
-          value={email}
-          onChangeText={text => setEmail(text)}
-          mode="outlined"
-        />
-        <TextInput
-          label="Password"
-          value={password}
-          onChangeText={text => setPassword(text)}
-          mode="outlined"
-          secureTextEntry
-        />
-        <Button mode="contained" onPress={() => userLogin()}>
-          Login
-        </Button>
-        <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
-          <Text style={{textAlign: 'center'}}>Dont have an account?</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+    <>
+      <KeyboardAvoidingView behavior="position">
+        <View style={styles.box1}>
+          <Text style={styles.text}>Welcome to Chat App</Text>
+          <Image style={styles.img} source={require('../assests/chat.png')} />
+        </View>
+        <View style={styles.box2}>
+          <TextInput
+            label="Email"
+            value={email}
+            onChangeText={text => setEmail(text)}
+            mode="outlined"
+          />
+          <TextInput
+            label="Password"
+            value={password}
+            onChangeText={text => setPassword(text)}
+            mode="outlined"
+            secureTextEntry
+          />
+          <Button mode="contained" onPress={() => userLogin()}>
+            Login
+          </Button>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
+            <Text style={{textAlign: 'center'}}>Dont have an account?</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+      {isOffline ? <NoInternetModal show={isOffline} /> : null}
+    </>
   );
 }
 
