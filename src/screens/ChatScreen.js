@@ -82,7 +82,7 @@ export default function ChatScreen({user, navigation, isOffline}) {
 }
 
 const styles = StyleSheet.create({
-  img: {width: 60, height: 60, borderRadius: 30, backgroundColor: 'blue'},
+  img: {width: 60, height: 60, borderRadius: 30, backgroundColor: 'white', resizeMode: "contain",},
   text: {
     fontSize: 18,
     marginLeft: 15,

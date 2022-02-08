@@ -11,6 +11,7 @@ export default function PostScreen({user, navigation, isOffline}) {
       .collection('usersposts')
       .doc(user.uid)
       .collection('posts')
+      .orderBy('time',"desc")
       .get();
     const allposts = querySanp.docs.map(docSnap => docSnap.data());
     setPosts(allposts);
